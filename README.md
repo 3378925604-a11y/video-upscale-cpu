@@ -4,6 +4,10 @@
 
 一条实测验证的链：`deband`（去黑底色带）→ `hqdn3d`（去压缩噪）→ `lanczos` 放大到 2560×1440 → `CAS 0.6`（锐化文字与图形边缘）。161 秒 1080p 素材几分钟跑完，输出 2K crf15，音轨原样不动。
 
+![demo](docs/demo.gif)
+
+*左：1080p 直接放大 · 右：本链（黑底色带与噪点差异最明显）*
+
 ## 前后对比（1:1 像素，同源画面）
 
 | Before（1080p 直接放大） | After（本链） |
@@ -55,3 +59,16 @@ python scripts/upscale2k.py 源视频.mp4 输出.mp4  # 指定输出
 ## License
 
 MIT
+
+## English
+
+**video-upscale-cpu** — resolution boost & restoration for ANY video: motion graphics, 2D/3D animation, live action, screen recordings, film clips. Pure-CPU ffmpeg chain: `deband` (kill dark-area banding) → `hqdn3d` (denoise) → `lanczos` upscale to 2560×1440 → `CAS 0.6` (sharpen text and edges). x264 crf15, audio untouched. Zero VRAM, no AI, no sign-up — a 161s clip finishes in minutes.
+
+```bash
+python scripts/upscale2k.py input.mp4            # → input_2k.mp4
+python scripts/upscale2k.py input.mp4 output.mp4 # custom output
+```
+
+Requires ffmpeg/ffprobe on PATH; Pillow + numpy optional (auto before/after comparison report).
+
+For per-content parameter tuning, verification workflow and three hard-won pitfalls (lanczos syntax, moov atom timing, IM-transcoded sources breaking A/V sync), see the SKILL.md and Chinese guide above.
