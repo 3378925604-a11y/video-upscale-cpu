@@ -49,3 +49,32 @@ ffmpeg -y -i <源> -vf "deband,hqdn3d=1.5:1.5:6:6,scale=2560:1440:flags=lanczos,
 - 同帧 1:1 像素对比：旧版用 `flags=neighbor` 放大到同尺寸，边缘能量比（新/旧）在 **1.05~1.15** 为正常增益；明显低于 1.0 = 链子起反作用，查参数。
 - 小字边缘、黑底色带两个观察点**打开对比图亲眼确认**，量化指标只是旁证。
 - 音轨：输出 `start_time=0` + 开头 3 秒 volumedetect 有响度。
+
+
+## English
+
+**What it does** — resolution boost & restoration for ANY video (motion graphics, 2D/3D animation, live action, screen recordings, film clips).
+Pure-CPU ffmpeg chain: `deband` (kill dark-area banding) → `hqdn3d` (denoise) → `lanczos` upscale to 2560×1440 → `CAS 0.6` (sharpen text and edges), x264 crf15, audio copied untouched. Zero VRAM, no AI, no sign-up; a 161 s clip finishes in minutes.
+
+**Run**
+
+```bash
+python scripts/upscale2k.py input.mp4            # -> input_2k.mp4
+python scripts/upscale2k.py input.mp4 output.mp4 # custom output
+```
+
+Requires `ffmpeg`/`ffprobe` on PATH; `Pillow + numpy` optional (auto before/after comparison report).
+
+**Manual equivalent**
+
+```bash
+ffmpeg -y -i in.mp4 -vf "deband,hqdn3d=1.5:1.5:6:6,scale=2560:1440:flags=lanczos,cas=0.6" -c:v libx264 -crf 15 -preset medium -c:a copy out.mp4
+```
+
+**Three pitfalls (all hit for real)**
+
+1. `lanczos` is NOT a standalone ffmpeg filter — write `scale=2560:1440:flags=lanczos`; `lanczos=2560:1440` fails with Invalid argument.
+2. mp4's `moov` atom is written only when encoding finishes — a half-done output will not open ("Invalid data"). Wait it out.
+3. Never use IM-transcoded copies (QQ/WeChat) as the source: they drop frames and damage timestamps, so swapping only the audio track causes A/V desync. Diagnose with `ffprobe -select_streams a:0 -show_entries stream=start_time` plus `silencedetect`.
+
+**Verification** — same-frame 1:1 comparison (old version upscaled with `flags=neighbor`): edge-energy ratio (new/old) **1.05–1.15** is a healthy gain; below 1.0 means the chain hurts. Audio: `start_time=0` and audible loudness in the first 3 s.
