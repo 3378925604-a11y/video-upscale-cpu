@@ -1,6 +1,6 @@
 ---
 name: video-upscale-cpu
-description: '视频补分辨率/升 2K/去色带/画面发糊发虚——任意视频通用（动效信息图、2D/3D 动画、实拍、录屏、电影剧集片段均可）的纯 CPU ffmpeg 修复链：deband 去色带 → hqdn3d 去压缩噪 → lanczos 放大 → CAS 锐化。零显存、零下载、免 AI、免注册。当用户发来视频说"补分辨率""升到 2K""画面糊/有色带""帮我放大""画质修复"时触发。对实拍素材同样有效；若追求实拍纹理的极致重建，可在本链基础上再叠加 AI 超分作为可选进阶。'
+description: '视频补分辨率/升 2K/去色带/画面发糊发虚——任意视频通用（动效信息图、2D/3D 动画、实拍、录屏、电影剧集片段均可）的纯 CPU ffmpeg 修复链：deband 去色带 → hqdn3d 去压缩噪 → lanczos 放大 → CAS 锐化。零显存、零下载、免 AI、免注册。当用户发来视频说"补分辨率""升到 2K""画面糊/有色带""帮我放大""画质修复"时触发。对实拍素材同样有效；若追求实拍纹理的极致重建，可在本链基础上再叠加 AI 超分作为可选进阶。English triggers: upscale a blurry video to 2K or 4K using CPU only, remove banding and compression artifacts, sharpen a low-bitrate screen recording or anime rip, ffmpeg video restoration without GPU, no AI model download, no registration.'
 ---
 
 # video-upscale-cpu — 视频补分辨率（纯 CPU 通用链）
